@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Be My Valentine ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: pink;
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    h1 {
+      color: #FF4081;
+    }
+
+    button {
+      background-color: #FF4081;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      margin: 10px;
+      font-size: 18px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+    }
+
+    #sad-animals {
+      display: none;
+      margin-top: 20px;
+    }
+
+    #sad-animals img {
+      width: 200px;
+      border-radius: 15px;
+    }
+
+    #confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    @media (max-width: 600px) {
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Will You Be My Valentine, Smriti? ❤️</h1>
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
+    <div id="sad-animals">
+      <p>Are you sure? 😢 Look at these sad faces...</p>
+      <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" alt="Sad Cat">
+    </div>
+  </div>
+
+  <canvas id="confetti"></canvas>
+
+  <script>
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const sadAnimals = document.getElementById('sad-animals');
+    const confettiCanvas = document.getElementById('confetti');
+    const ctx = confettiCanvas.getContext('2d');
+
+    // Resize canvas
+    function resizeCanvas() {
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Confetti effect
+    const confetti = [];
+    function createConfetti() {
+      for (let i = 0; i < 100; i++) {
+        confetti.push({
+          x: Math.random() * confettiCanvas.width,
+          y: Math.random() * confettiCanvas.height - confettiCanvas.height,
+          size: Math.random() * 10 + 5,
+          color: `hsl(${Math.random() * 360}, 100%, 70%)`,
+          speed: Math.random() * 3 + 2
+        });
+      }
+    }
+
+    function drawConfetti() {
+      ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      confetti.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+
+        p.y += p.speed;
+        if (p.y > confettiCanvas.height) p.y = -p.size;
+      });
+      requestAnimationFrame(drawConfetti);
+    }
+
+    yesBtn.addEventListener('click', () => {
+      alert('Yay! You made my Valentine\'s Day perfect, wifeyyyy! 💖');
+      createConfetti();
+      drawConfetti();
+    });
+
+    noBtn.addEventListener('click', () => {
+      sadAnimals.style.display = 'block';
+      noBtn.disabled = true; // Disable the "No" button after showing sad animals
+    });
+  </script>
+</body>
+</html>
